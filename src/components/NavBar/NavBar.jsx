@@ -4,7 +4,7 @@ import { Menu, AccountCircle, Brightness4, Brightness7, ViewSidebar } from '@mui
 import { Link } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles';
 
-import { Sidebar } from '..'
+import { Search, Sidebar } from '..'
 import useStyles from './styles';
 
 const NavBar = () => {
@@ -22,7 +22,7 @@ const NavBar = () => {
               className={classes.menuButton}
               color='inherit'
               edge='start'
-              onClick={()=> setMobileOpen((prevMobileOpen)=>!prevMobileOpen)}
+              onClick={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
               style={{ outline: 'none' }}
             >
               <Menu />
@@ -33,7 +33,7 @@ const NavBar = () => {
             nClick={() => { }}>
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
-          {!isMobile && 'Search...'}
+          {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
               <Button color='inherit' onClick={() => { }}>
@@ -55,7 +55,7 @@ const NavBar = () => {
               </Button>
             )}
           </div>
-          {isMobile && 'Search...'}
+          {isMobile && <Search />}
         </Toolbar>
       </AppBar>
       <div>
@@ -65,17 +65,17 @@ const NavBar = () => {
               variant='temporary'
               anchor='right'
               open={mobileOpen}
-              onClose={()=> setMobileOpen((prevMobileOpen)=>!prevMobileOpen)}
+              onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
               classes={{ paper: classes.drawerPaper }}
               ModalProps={{ keepMounted: true }}
             >
               <Sidebar setMobileOpen={setMobileOpen} />
             </Drawer>
           ) : (
-            <Drawer 
-            classes={{ paper: classes.drawerPaper}} 
-            variant='permanent' 
-            open >
+            <Drawer
+              classes={{ paper: classes.drawerPaper }}
+              variant='permanent'
+              open >
               <Sidebar setMobileOpen={setMobileOpen} />
             </Drawer>
           )}
