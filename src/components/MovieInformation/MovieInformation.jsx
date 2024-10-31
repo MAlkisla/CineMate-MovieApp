@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 import useStyles from './styles';
-import { useGetMovieQuery } from '../../services/TMDB';
+import { useGetMovieQuery, useGetRecommendationsQuery } from '../../services/TMDB';
 import genreIcons from '../../assets/genres';
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
+import { MovieList } from '..'
 
 const MovieInformation = () => {
   const { id } = useParams();
@@ -16,8 +17,11 @@ const MovieInformation = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const { data: recommendations, isFetching: isRecommendationsFetching } = useGetRecommendationsQuery({ list: 'recommendations', movie_id: id });
+
   const isMovieFavorited = false;
   const isMovieWatchlisted = false;
+
   const addToFavorites = () => {
 
   };
@@ -120,8 +124,8 @@ const MovieInformation = () => {
                   Trailer
                 </Button>
               </ButtonGroup>
-              </Grid>
-              <Grid item xs={12} sm={6} lassName={classes.buttonsContainer}>
+            </Grid>
+            <Grid item xs={12} sm={6} lassName={classes.buttonsContainer}>
               <ButtonGroup size='medium' variant='outlined'>
                 <Button onClick={() => { addToFavorites }} endIcon={isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />}>
                   {isMovieFavorited ? 'Unfavorite' : 'Favorite'}
@@ -129,16 +133,24 @@ const MovieInformation = () => {
                 <Button onClick={() => { addToWatchlist }} endIcon={isMovieWatchlisted ? <Remove /> : <PlusOne />}>
                   Watchlist
                 </Button>
-                <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main'}}>
-                  <Typography style={{textDecoration: 'none'}} component={Link} to='/' color='inherit' variant='subtitle2'>
+                <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main' }}>
+                  <Typography style={{ textDecoration: 'none' }} component={Link} to='/' color='inherit' variant='subtitle2'>
                     Back
                   </Typography>
                 </Button>
               </ButtonGroup>
-              </Grid>
+            </Grid>
           </div>
         </Grid>
       </Grid>
+      <Box marginTop='5rem' width='100%'>
+        <Typography variant='h3' gutterBottom align='center'>
+          You might also like
+        </Typography>
+        {recommendations
+          ? <MovieList movies={recommendations} numberOfMovies={12}/>
+          : <Box> Sorry, nothing was found.</Box>}
+      </Box>
     </Grid>
   );
 };
