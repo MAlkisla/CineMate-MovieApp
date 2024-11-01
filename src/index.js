@@ -6,7 +6,8 @@ import { ThemeProvider as StylesThemeProvider } from '@mui/styles';
 import { Provider } from 'react-redux';
 
 import App from './components/App';
-import store from './app/store'
+import store from './app/store';
+import './index.css';
 
 const theme = createTheme({});
 const rootElement = document.getElementById('root');
