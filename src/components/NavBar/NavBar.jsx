@@ -1,14 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { AppBar, IconButton, Toolbar, Drawer, Button, Avatar, useMediaQuery } from '@mui/material';
-import { Menu, AccountCircle, Brightness4, Brightness7, ViewSidebar } from '@mui/icons-material';
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState, useContext } from 'react';
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Drawer,
+  Button,
+  Avatar,
+  useMediaQuery,
+} from '@mui/material';
+import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setUser, userSelector } from '../../features/auth';
 import { Search, Sidebar } from '..';
-import { createSessionId, fetchToken, getSessionId, moviesApi } from '../../utils';
+import {
+  createSessionId,
+  fetchToken,
+  moviesApi,
+} from '../../utils';
 import useStyles from './styles';
+import { ColorModeContext } from '../../utils/ToggleColorMode'; 
 
 const NavBar = () => {
   const { isAuthenticated, user } = useSelector(userSelector);
@@ -17,6 +30,7 @@ const NavBar = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const theme = useTheme();
   const dispatch = useDispatch();
+  const colorMode = useContext(ColorModeContext); // Use the theme context
 
   const token = localStorage.getItem('request_token');
   const sessionIdFromLocalStorage = localStorage.getItem('session_id');
@@ -25,12 +39,15 @@ const NavBar = () => {
     const logInUser = async () => {
       if (token) {
         if (sessionIdFromLocalStorage) {
-          const { data: userData } = await moviesApi.get(`/account?session_id=${sessionIdFromLocalStorage}`);
+          const { data: userData } = await moviesApi.get(
+            `/account?session_id=${sessionIdFromLocalStorage}`,
+          );
           dispatch(setUser(userData));
-        }
-        else {
+        } else {
           const sessionId = await createSessionId();
-          const { data: userData } = await moviesApi.get(`/account?session_id=${sessionId}`);
+          const { data: userData } = await moviesApi.get(
+            `/account?session_id=${sessionId}`,
+          );
           dispatch(setUser(userData));
         }
       }
@@ -40,42 +57,45 @@ const NavBar = () => {
 
   return (
     <>
-      <AppBar position='fixed'>
+      <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
           {isMobile && (
             <IconButton
               className={classes.menuButton}
-              color='inherit'
-              edge='start'
+              color="inherit"
+              edge="start"
               onClick={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
               style={{ outline: 'none' }}
             >
               <Menu />
-            </IconButton>)}
+            </IconButton>
+          )}
           <IconButton
-            color='inherit'
+            color="inherit"
             sx={{ ml: 1 }}
-            onClick={() => { }}>
+            onClick={colorMode.toggleColorMode} // Use the toggle function
+          >
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
-              <Button color='inherit' onClick={fetchToken}>
+              <Button color="inherit" onClick={fetchToken}>
                 Login &nbsp; <AccountCircle />
               </Button>
             ) : (
-              <Button color='inherit'
+              <Button
+                color="inherit"
                 component={Link}
                 to={`/profile/${user.id}`}
                 className={classes.linkButton}
-                onClick={() => { }}
+                onClick={() => {}}
               >
                 {!isMobile && <>My Movies &nbsp; </>}
                 <Avatar
                   style={{ width: 30, height: 30 }}
-                  alt='Profile'
-                  src='https://i.pinimg.com/736x/fc/04/73/fc047347b17f7df7ff288d78c8c281cf.jpg'
+                  alt="Profile"
+                  src="https://i.pinimg.com/736x/fc/04/73/fc047347b17f7df7ff288d78c8c281cf.jpg"
                 />
               </Button>
             )}
@@ -87,8 +107,8 @@ const NavBar = () => {
         <nav className={classes.drawer}>
           {isMobile ? (
             <Drawer
-              variant='temporary'
-              anchor='right'
+              variant="temporary"
+              anchor="right"
               open={mobileOpen}
               onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
               classes={{ paper: classes.drawerPaper }}
@@ -97,17 +117,14 @@ const NavBar = () => {
               <Sidebar setMobileOpen={setMobileOpen} />
             </Drawer>
           ) : (
-            <Drawer
-              classes={{ paper: classes.drawerPaper }}
-              variant='permanent'
-              open >
+            <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
               <Sidebar setMobileOpen={setMobileOpen} />
             </Drawer>
           )}
         </nav>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;
