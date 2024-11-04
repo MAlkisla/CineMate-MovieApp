@@ -29,8 +29,8 @@ export default makeStyles((theme) => ({
     cardContent: {
         color: '#fff',
         width: '40%',
-        [theme.breakpoints.down('am')]: {
-            with: '100%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
         },
     },
     cardContentRoot: {

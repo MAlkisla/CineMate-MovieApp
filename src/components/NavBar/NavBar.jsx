@@ -21,7 +21,7 @@ import {
   moviesApi,
 } from '../../utils';
 import useStyles from './styles';
-import { ColorModeContext } from '../../utils/ToggleColorMode'; 
+import { ColorModeContext } from '../../utils/ToggleColorMode';
 
 const NavBar = () => {
   const { isAuthenticated, user } = useSelector(userSelector);
@@ -89,14 +89,17 @@ const NavBar = () => {
                 component={Link}
                 to={`/profile/${user.id}`}
                 className={classes.linkButton}
-                onClick={() => {}}
+                onClick={() => { }}
               >
                 {!isMobile && <>My Movies &nbsp; </>}
                 <Avatar
                   style={{ width: 30, height: 30 }}
                   alt="Profile"
-                  src="https://i.pinimg.com/736x/fc/04/73/fc047347b17f7df7ff288d78c8c281cf.jpg"
-                />
+                  src={
+                    user?.avatar?.tmdb?.avatar_path
+                      ? `https://www.themoviedb.org/t/p/w64_and_h64_face${user.avatar.tmdb.avatar_path}`
+                      : `https://www.gravatar.com/avatar/${user.avatar.gravatar.hash}`
+                  } />
               </Button>
             )}
           </div>
