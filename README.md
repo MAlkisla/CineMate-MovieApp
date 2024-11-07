@@ -2,10 +2,10 @@
 
 # Cinemate 🎬
 
-![GitHub last commit](https://img.shields.io/github/last-commit/mericalkisla/CineMate-MovieApp) 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/mericalkisla/CineMate-MovieApp?color=%23ff9900)
+![GitHub last commit](https://img.shields.io/github/last-commit/MAlkisla/CineMate-MovieApp) 
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/MAlkisla/CineMate-MovieApp/main)
 ![Languages](https://img.shields.io/badge/languages-React-blue.svg)
-![GitHub repo size in bytes](https://img.shields.io/github/repo-size/mericalkisla/CineMate-MovieApp)
+![GitHub repo size in bytes](https://img.shields.io/github/repo-size/MAlkisla/CineMate-MovieApp)
 
 ## Demo
 
